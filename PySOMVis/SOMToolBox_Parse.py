@@ -7,6 +7,23 @@ class SOMToolBox_Parse:
     def __init__(self, filename):
         self.filename = filename
 
+    def read_template_vec_file(self,):
+        if self.filename[-3:len(self.filename)] != '.tv':
+            return {}
+        
+        df = {}
+        with open(self.filename, 'rb') as file:
+            for byte in file:
+                line = byte.decode('UTF-8')
+                if not line.startswith('$'):
+                    splitted=line.rstrip().split(' ')
+                    try:
+                        df[int(splitted[0]) - 1] = splitted[1]
+                    except: raise ValueError('The template vector file does not follow convention.') 
+        file.close()
+        return df
+
+
     def read_weight_file(self,):
         df = {}
         if self.filename[-3:len(self.filename)] == '.gz':
